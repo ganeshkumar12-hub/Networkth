@@ -1,6 +1,9 @@
 import { UserProfile, Community, Opportunity } from '../src/types';
+import { convertedFoundersProfiles } from '../src/data/foundersData';
+import { convertedProfessionalsProfiles } from '../src/data/professionalsData';
+import { convertedStudentsProfiles } from '../src/data/studentsData';
 
-export const initialUsers: (UserProfile & { passwordHash: string })[] = [
+const coreUsers: (UserProfile & { passwordHash: string })[] = [
   {
     id: 'user_1',
     name: 'Elena Rostova',
@@ -542,6 +545,13 @@ export const initialUsers: (UserProfile & { passwordHash: string })[] = [
     availability: 'Open to Connect',
     createdAt: '2025-01-01T00:00:00.000Z'
   }
+];
+
+export const initialUsers: (UserProfile & { passwordHash: string })[] = [
+  ...coreUsers,
+  ...convertedFoundersProfiles,
+  ...convertedProfessionalsProfiles,
+  ...convertedStudentsProfiles,
 ];
 
 export const initialCommunities: Community[] = [

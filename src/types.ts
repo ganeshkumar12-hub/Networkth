@@ -49,6 +49,16 @@ export interface UserProfile {
   status: 'active' | 'deactivated';
   isAdmin?: boolean;
   availability: 'Open to Connect' | 'Mentoring' | 'Hiring' | 'Collaborating' | 'Busy';
+  outreachMeta?: {
+    companyOrInstitution?: string;
+    approachMethod?: string;
+    dateApproached?: string;
+    followUp1?: string;
+    followUp2?: string;
+    followUp3?: string;
+    response?: string;
+    contactNo?: string;
+  };
   createdAt: string;
 }
 

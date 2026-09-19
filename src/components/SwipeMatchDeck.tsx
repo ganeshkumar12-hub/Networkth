@@ -3,6 +3,9 @@ import { motion, AnimatePresence, useMotionValue, useTransform } from 'motion/re
 import { UserProfile, UserRole } from '../types';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
+import { convertedFoundersProfiles } from '../data/foundersData';
+import { convertedProfessionalsProfiles } from '../data/professionalsData';
+import { convertedStudentsProfiles } from '../data/studentsData';
 import { ConnectModal } from './ConnectModal';
 import {
   X,
@@ -82,24 +85,42 @@ export const SwipeMatchDeck: React.FC<SwipeMatchDeckProps> = ({
     if (customUsers && customUsers.length > 0) {
       setAllFetchedUsers(customUsers);
     } else {
-      api.getUsers().then((res) => {
-        setAllFetchedUsers(res.users);
-      });
+      const staticProfiles = [
+        ...convertedFoundersProfiles,
+        ...convertedProfessionalsProfiles,
+        ...convertedStudentsProfiles,
+      ];
+      api
+        .getUsers()
+        .then((res) => {
+          if (res?.users && res.users.length > 0) {
+            setAllFetchedUsers(res.users);
+          } else {
+            setAllFetchedUsers(staticProfiles);
+          }
+        })
+        .catch(() => {
+          setAllFetchedUsers(staticProfiles);
+        });
     }
   }, [customUsers]);
 
-  // Filter candidates based on category
+  // Filter candidates based on category:
+  // User intent requirement:
+  // "in students sections professinals shoudl be there and in profoessinal sections tudents shoudkl be there"
   const candidates = useMemo(() => {
     let list = allFetchedUsers.filter((u) => u.id !== currentUser?.id && u.status === 'active');
 
     if (activeCategory === 'startups') {
       list = list.filter((u) => u.role === 'Startup' || u.role === 'Founder');
     } else if (activeCategory === 'students') {
-      list = list.filter((u) => u.role === 'Student');
-    } else if (activeCategory === 'professionals') {
+      // In students section: professionals & mentors should be there
       list = list.filter(
         (u) => u.role === 'Working Professional' || u.role === 'Mentor / Industry Expert'
       );
+    } else if (activeCategory === 'professionals') {
+      // In professionals section: students & collegiate talent should be there
+      list = list.filter((u) => u.role === 'Student');
     } else if (activeCategory === 'brands') {
       list = list.filter((u) => u.role === 'Brand');
     } else if (activeCategory === 'creators') {
@@ -294,17 +315,17 @@ export const SwipeMatchDeck: React.FC<SwipeMatchDeckProps> = ({
     },
     {
       id: 'students',
-      label: 'Students',
-      count: allFetchedUsers.filter((u) => u.role === 'Student' && u.id !== currentUser?.id).length,
-    },
-    {
-      id: 'professionals',
-      label: 'Professionals',
+      label: 'Students (Find Mentors)',
       count: allFetchedUsers.filter(
         (u) =>
           (u.role === 'Working Professional' || u.role === 'Mentor / Industry Expert') &&
           u.id !== currentUser?.id
       ).length,
+    },
+    {
+      id: 'professionals',
+      label: 'Professionals (Find Students)',
+      count: allFetchedUsers.filter((u) => u.role === 'Student' && u.id !== currentUser?.id).length,
     },
     {
       id: 'brands',
@@ -565,6 +586,42 @@ export const SwipeMatchDeck: React.FC<SwipeMatchDeckProps> = ({
                         ))}
                       </div>
                     </div>
+
+                    {/* Outreach / Company / Institution Meta if present */}
+                    {currentCandidate.outreachMeta && (
+                      <div className="mt-3 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-[11px]">
+                        <div className="flex items-center gap-2">
+                          <span className="text-slate-500">Method:</span>
+                          <span className="font-bold text-slate-800">
+                            {currentCandidate.outreachMeta.approachMethod}
+                          </span>
+                          <span className="text-slate-300">•</span>
+                          <span className="text-slate-500">Date:</span>
+                          <span className="font-mono text-slate-700">
+                            {currentCandidate.outreachMeta.dateApproached}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {currentCandidate.outreachMeta.contactNo && (
+                            <span className="text-indigo-600 font-mono font-medium">
+                              {currentCandidate.outreachMeta.contactNo}
+                            </span>
+                          )}
+                          <span
+                            className={`px-2 py-0.5 rounded-md font-bold text-[10px] ${
+                              currentCandidate.outreachMeta.response === 'Good' ||
+                              currentCandidate.outreachMeta.response === 'Active'
+                                ? 'bg-emerald-100 text-emerald-800'
+                                : currentCandidate.outreachMeta.response === 'Partially'
+                                ? 'bg-amber-100 text-amber-800'
+                                : 'bg-slate-200 text-slate-700'
+                            }`}
+                          >
+                            {currentCandidate.outreachMeta.response}
+                          </span>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Bottom Quick Trigger Details */}

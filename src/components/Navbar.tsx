@@ -46,6 +46,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'match-deck', label: '⚡ Swipe Match' },
     { id: 'discover', label: 'Discover' },
     { id: 'students', label: 'For Students' },
+    { id: 'professionals', label: 'For Professionals' },
     { id: 'startups', label: 'For Startups' },
     { id: 'creators', label: 'For Creators' },
     { id: 'communities', label: 'Communities' },

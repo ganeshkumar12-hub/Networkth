@@ -154,6 +154,32 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
             )}
           </div>
         )}
+
+        {/* Outreach / Company / Institution Meta */}
+        {user.outreachMeta && (
+          <div className="mb-3 px-2.5 py-1.5 rounded-xl bg-slate-50 border border-slate-200/80 text-[10px] space-y-1">
+            <div className="flex items-center justify-between text-slate-600 font-semibold">
+              <span>Method: <strong className="text-slate-900">{user.outreachMeta.approachMethod}</strong></span>
+              <span
+                className={`px-1.5 py-0.5 rounded-sm font-bold ${
+                  user.outreachMeta.response === 'Good' || user.outreachMeta.response === 'Active'
+                    ? 'bg-emerald-100 text-emerald-800'
+                    : user.outreachMeta.response === 'Partially'
+                    ? 'bg-amber-100 text-amber-800'
+                    : 'bg-slate-200 text-slate-700'
+                }`}
+              >
+                {user.outreachMeta.response}
+              </span>
+            </div>
+            <div className="flex items-center justify-between text-slate-500">
+              <span>Date: {user.outreachMeta.dateApproached}</span>
+              {user.outreachMeta.contactNo && (
+                <span className="font-mono text-indigo-600 font-medium">📞 {user.outreachMeta.contactNo}</span>
+              )}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Action Buttons */}

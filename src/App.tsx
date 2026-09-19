@@ -10,6 +10,7 @@ import { CommunityDetailPage } from './pages/CommunityDetailPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { MessagesPage } from './pages/MessagesPage';
 import { StudentsPage } from './pages/StudentsPage';
+import { ProfessionalsPage } from './pages/ProfessionalsPage';
 import { StartupsPage } from './pages/StartupsPage';
 import { CreatorsPage } from './pages/CreatorsPage';
 import { CommunitiesDirectoryPage } from './pages/CommunitiesDirectoryPage';
@@ -106,6 +107,14 @@ const MainApp: React.FC = () => {
 
         {currentTab === 'students' && (
           <StudentsPage
+            onViewProfile={(userId) => handleNavigate('profile', userId)}
+            onOpenMessage={(userId) => handleNavigate('messages', userId)}
+            onExploreDirectory={(role) => handleNavigate('discover', role)}
+          />
+        )}
+
+        {currentTab === 'professionals' && (
+          <ProfessionalsPage
             onViewProfile={(userId) => handleNavigate('profile', userId)}
             onOpenMessage={(userId) => handleNavigate('messages', userId)}
             onExploreDirectory={(role) => handleNavigate('discover', role)}

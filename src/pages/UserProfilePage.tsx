@@ -280,6 +280,42 @@ export const UserProfilePage: React.FC<UserProfilePageProps> = ({
                     )}
                   </div>
                 )}
+
+                {/* Outreach & Organization Metadata */}
+                {profile.outreachMeta && (
+                  <div className="mt-4 p-3.5 rounded-2xl bg-slate-50 border border-slate-200/90 text-xs flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex flex-wrap items-center gap-3 text-slate-600">
+                      <span>Approach Method: <strong className="text-slate-900">{profile.outreachMeta.approachMethod}</strong></span>
+                      <span>•</span>
+                      <span>Date: <strong className="text-slate-900">{profile.outreachMeta.dateApproached}</strong></span>
+                      {profile.outreachMeta.followUp1 && (
+                        <>
+                          <span>•</span>
+                          <span>Follow-up 1: <strong className="text-slate-900">{profile.outreachMeta.followUp1}</strong></span>
+                        </>
+                      )}
+                      {profile.outreachMeta.contactNo && (
+                        <>
+                          <span>•</span>
+                          <span className="text-indigo-600 font-mono font-bold">📞 {profile.outreachMeta.contactNo}</span>
+                        </>
+                      )}
+                    </div>
+                    <div>
+                      <span
+                        className={`px-2.5 py-1 rounded-lg text-xs font-bold ${
+                          profile.outreachMeta.response === 'Good' || profile.outreachMeta.response === 'Active'
+                            ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                            : profile.outreachMeta.response === 'Partially'
+                            ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                            : 'bg-slate-200 text-slate-700'
+                        }`}
+                      >
+                        Response: {profile.outreachMeta.response}
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               /* Inline Edit Form */

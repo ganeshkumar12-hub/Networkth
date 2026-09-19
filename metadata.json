@@ -1,0 +1,6 @@
+{
+  "name": "Networkth",
+  "description": "A professional networking platform focused on helping the right people discover and connect with each other across students, professionals, founders, creators, and communities.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
